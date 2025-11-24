@@ -1,0 +1,177 @@
+﻿@{
+    ViewData["Title"] = "Trang Chủ";
+    var customerId = Context.Session.GetInt32("CustomerId");
+    var stats = ViewData["Stats"] as dynamic;
+    var customer = ViewData["Customer"] as QlyKhachHang.Models.Customer;
+}
+
+@if (customerId.HasValue && customer != null)
+{
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="alert alert-info">
+                <h4 class="mb-2">
+                    <i class="fas fa-user-check"></i> Chào mừng, @customer.CustomerName!
+                </h4>
+                <p class="mb-0">Email: @customer.Email | Điện thoại: @customer.Phone</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">🛒 Giỏ Hàng</h5>
+                    <p class="card-text display-5">@stats.CustomerCarts</p>
+                </div>
+                <div class="card-footer">
+                    <a href="@Url.Action("Index", "Cart")" class="text-white text-decoration-none">Xem chi tiết →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <h5 class="card-title">⭐ Đánh Giá</h5>
+                    <p class="card-text display-5">@stats.CustomerReviews</p>
+                </div>
+                <div class="card-footer">
+                    <a href="@Url.Action("Index", "Review")" class="text-white text-decoration-none">Xem chi tiết →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-warning">
+                <div class="card-body">
+                    <h5 class="card-title">📄 Hóa Đơn</h5>
+                    <p class="card-text display-5">@stats.CustomerInvoices</p>
+                </div>
+                <div class="card-footer">
+                    <a href="@Url.Action("Index", "Invoice")" class="text-white text-decoration-none">Xem chi tiết →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-danger">
+                <div class="card-body">
+                    <h5 class="card-title">💰 Tổng Chi Tiêu</h5>
+                    <p class="card-text display-6">0 VNĐ</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="mb-3">📊 Tổng Quan Hệ Thống</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title">Khách Hàng</h6>
+                    <p class="card-text display-6">@stats.TotalCustomers</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title">Sản Phẩm</h6>
+                    <p class="card-text display-6">@stats.TotalProducts</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title">Giỏ Hàng</h6>
+                    <p class="card-text display-6">@stats.TotalCarts</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title">Đánh Giá</h6>
+                    <p class="card-text display-6">@stats.TotalReviews</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title">Hóa Đơn</h6>
+                    <p class="card-text display-6">@stats.TotalInvoices</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title">Doanh Thu</h6>
+                    <p class="card-text" style="font-size: 0.85rem;">
+                        @stats.TotalRevenue.ToString("C0")
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="jumbotron bg-light p-5 rounded">
+                <h1 class="display-4">Chào Mừng Đến Với Hệ Thống Quản Lý Khách Hàng</h1>
+                <p class="lead">Đây là một ứng dụng quản lý khách hàng toàn diện với đầy đủ tính năng.</p>
+                <hr class="my-4">
+                <p>Vui lòng đăng nhập hoặc đăng ký để sử dụng các tính năng của hệ thống.</p>
+                <a class="btn btn-primary btn-lg me-2" href="@Url.Action("Login", "Account")" role="button">
+                    <i class="fas fa-sign-in-alt"></i> Đăng Nhập
+                </a>
+                <a class="btn btn-success btn-lg" href="@Url.Action("Register", "Account")" role="button">
+                    <i class="fas fa-user-plus"></i> Đăng Ký
+                </a>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">📊 Quản Lý Dữ Liệu</h5>
+                            <p class="card-text">Quản lý khách hàng, sản phẩm, giỏ hàng, đơn hàng một cách hiệu quả.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">🔐 Bảo Mật</h5>
+                            <p class="card-text">Hệ thống xác thực an toàn với mã hóa mật khẩu tiên tiến.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">⚡ Tính Năng</h5>
+                            <p class="card-text">Đầy đủ các tính năng CRUD cho tất cả các đối tượng.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

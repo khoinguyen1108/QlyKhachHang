@@ -1,0 +1,47 @@
+@model QlyKhachHang.Models.Product
+
+@{
+    ViewData["Title"] = "Xóa S?n Ph?m";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2 class="text-danger">@ViewData["Title"]</h2>
+
+        <div class="alert alert-danger">
+            <strong>C?nh báo!</strong> Hành ??ng này s? xóa s?n ph?m này v?nh vi?n.
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-3">ID:</dt>
+                    <dd class="col-sm-9">@Model.ProductId</dd>
+
+                    <dt class="col-sm-3">Tên:</dt>
+                    <dd class="col-sm-9">@Model.ProductName</dd>
+
+                    <dt class="col-sm-3">Mô T?:</dt>
+                    <dd class="col-sm-9">@Model.Description</dd>
+
+                    <dt class="col-sm-3">Giá:</dt>
+                    <dd class="col-sm-9">@Model.Price.ToString("C0")</dd>
+
+                    <dt class="col-sm-3">T?n Kho:</dt>
+                    <dd class="col-sm-9">@Model.Stock</dd>
+
+                    <dt class="col-sm-3">Danh M?c:</dt>
+                    <dd class="col-sm-9">@Model.Category</dd>
+                </dl>
+            </div>
+        </div>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="ProductId" />
+            <div class="mb-3">
+                <a asp-action="Index" class="btn btn-secondary">H?y</a>
+                <button type="submit" class="btn btn-danger">Xóa</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,138 @@
+@model QlyKhachHang.Models.Customer
+
+@{
+    ViewData["Title"] = "Chi Ti?t Khách Hàng";
+}
+
+<div class="row mb-3">
+    <div class="col-md-8">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+    <div class="col-md-4 text-end">
+        <a asp-action="Edit" asp-route-id="@Model.CustomerId" class="btn btn-warning">
+            <i class="fas fa-edit"></i> S?a
+        </a>
+        <a asp-action="Delete" asp-route-id="@Model.CustomerId" class="btn btn-danger">
+            <i class="fas fa-trash"></i> Xóa
+        </a>
+        <a asp-action="Index" class="btn btn-secondary">Quay L?i</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Thông Tin Khách Hàng</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-3">ID:</dt>
+                    <dd class="col-sm-9">@Model.CustomerId</dd>
+
+                    <dt class="col-sm-3">Tên:</dt>
+                    <dd class="col-sm-9">@Model.CustomerName</dd>
+
+                    <dt class="col-sm-3">S? ?i?n Tho?i:</dt>
+                    <dd class="col-sm-9">@Model.Phone</dd>
+
+                    <dt class="col-sm-3">Email:</dt>
+                    <dd class="col-sm-9">@Model.Email</dd>
+
+                    <dt class="col-sm-3">??a Ch?:</dt>
+                    <dd class="col-sm-9">@Model.Address</dd>
+
+                    <dt class="col-sm-3">Thành Ph?:</dt>
+                    <dd class="col-sm-9">@Model.City</dd>
+
+                    <dt class="col-sm-3">Mã B?u ?i?n:</dt>
+                    <dd class="col-sm-9">@Model.PostalCode</dd>
+
+                    <dt class="col-sm-3">Ngày T?o:</dt>
+                    <dd class="col-sm-9">@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")</dd>
+
+                    <dt class="col-sm-3">Ngày S?a:</dt>
+                    <dd class="col-sm-9">@(Model.ModifiedDate.HasValue ? Model.ModifiedDate.Value.ToString("dd/MM/yyyy HH:mm:ss") : "Ch?a s?a")</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Gi? Hàng (@Model.Carts.Count)</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.Carts.Any())
+                {
+                    <ul class="list-group">
+                        @foreach (var cart in Model.Carts)
+                        {
+                            <li class="list-group-item">
+                                <strong>Gi? ID: @cart.CartId</strong> - Ngày t?o: @cart.CreatedDate.ToString("dd/MM/yyyy")
+                                <a asp-controller="Cart" asp-action="Details" asp-route-id="@cart.CartId" class="btn btn-sm btn-info float-end">
+                                    Xem Chi Ti?t
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>Khách hàng ch?a có gi? hàng nào.</p>
+                }
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0">?ánh Giá (@Model.Reviews.Count)</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.Reviews.Any())
+                {
+                    <ul class="list-group">
+                        @foreach (var review in Model.Reviews)
+                        {
+                            <li class="list-group-item">
+                                <strong>? @review.Rating/5</strong> - @review.Comment
+                                <a asp-controller="Review" asp-action="Details" asp-route-id="@review.ReviewId" class="btn btn-sm btn-info float-end">
+                                    Xem
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>Khách hàng ch?a có ?ánh giá nào.</p>
+                }
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">Hóa ??n (@Model.Invoices.Count)</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.Invoices.Any())
+                {
+                    <ul class="list-group">
+                        @foreach (var invoice in Model.Invoices)
+                        {
+                            <li class="list-group-item">
+                                <strong>@invoice.InvoiceNumber</strong> - @invoice.TotalAmount.ToString("C0") - Tr?ng thái: @invoice.Status
+                                <a asp-controller="Invoice" asp-action="Details" asp-route-id="@invoice.InvoiceId" class="btn btn-sm btn-info float-end">
+                                    Xem
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>Khách hàng ch?a có hóa ??n nào.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

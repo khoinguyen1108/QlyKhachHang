@@ -1,0 +1,47 @@
+@model QlyKhachHang.Models.Customer
+
+@{
+    ViewData["Title"] = "Xóa Khách Hàng";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2 class="text-danger">@ViewData["Title"]</h2>
+
+        <div class="alert alert-danger">
+            <strong>C?nh báo!</strong> Hành ??ng này s? xóa khách hàng này v?nh vi?n.
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-3">ID:</dt>
+                    <dd class="col-sm-9">@Model.CustomerId</dd>
+
+                    <dt class="col-sm-3">Tên:</dt>
+                    <dd class="col-sm-9">@Model.CustomerName</dd>
+
+                    <dt class="col-sm-3">S? ?i?n Tho?i:</dt>
+                    <dd class="col-sm-9">@Model.Phone</dd>
+
+                    <dt class="col-sm-3">Email:</dt>
+                    <dd class="col-sm-9">@Model.Email</dd>
+
+                    <dt class="col-sm-3">??a Ch?:</dt>
+                    <dd class="col-sm-9">@Model.Address</dd>
+
+                    <dt class="col-sm-3">Thành Ph?:</dt>
+                    <dd class="col-sm-9">@Model.City</dd>
+                </dl>
+            </div>
+        </div>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="CustomerId" />
+            <div class="mb-3">
+                <a asp-action="Index" class="btn btn-secondary">H?y</a>
+                <button type="submit" class="btn btn-danger">Xóa</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+@model QlyKhachHang.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "??ng Nh?p";
+    var returnUrl = ViewData["ReturnUrl"] as string ?? "";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow mt-5">
+            <div class="card-header bg-primary text-white text-center">
+                <h3 class="mb-0">?? @ViewData["Title"]</h3>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="Login" method="post">
+                    <input type="hidden" name="returnUrl" value="@returnUrl" />
+
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="UsernameOrEmail" class="form-label">Tên ??ng Nh?p ho?c Email</label>
+                        <input asp-for="UsernameOrEmail" class="form-control form-control-lg" placeholder="Nh?p tên ??ng nh?p ho?c email" />
+                        <span asp-validation-for="UsernameOrEmail" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label">M?t Kh?u</label>
+                        <input asp-for="Password" type="password" class="form-control form-control-lg" placeholder="Nh?p m?t kh?u" />
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input asp-for="RememberMe" class="form-check-input" id="rememberMe" />
+                            <label class="form-check-label" for="rememberMe">
+                                Nh? tôi
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-sign-in-alt"></i> ??ng Nh?p
+                        </button>
+                    </div>
+
+                    <hr />
+
+                    <p class="text-center mb-0">
+                        Ch?a có tài kho?n? <a asp-action="Register" class="fw-bold">??ng ký ngay</a>
+                    </p>
+                    <p class="text-center small mt-2">
+                        <a href="#">Quên m?t kh?u?</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
