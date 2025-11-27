@@ -1,7 +1,7 @@
-@model IEnumerable<QlyKhachHang.Models.Product>
+﻿@model IEnumerable<QlyKhachHang.Models.Product>
 
 @{
-    ViewData["Title"] = "Danh S�ch S?n Ph?m";
+    ViewData["Title"] = "Danh Sách Sản Phẩm";
 }
 
 <div class="row mb-3">
@@ -10,7 +10,7 @@
     </div>
     <div class="col-md-6 text-end">
         <a asp-action="Create" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Th�m S?n Ph?m
+            <i class="fas fa-plus"></i> Thêm Sản Phẩm
         </a>
     </div>
 </div>
@@ -22,13 +22,13 @@
             <thead class="table-dark">
                 <tr>
                     <th>ID</th>
-                    <th>T�n S?n Ph?m</th>
-                    <th>M� T?</th>
-                    <th>Gi�</th>
-                    <th>T?n Kho</th>
-                    <th>Danh M?c</th>
-                    <th>Ng�y T?o</th>
-                    <th>H�nh ??ng</th>
+                    <th>Tên Sản Phẩm</th>
+                    <th>Mô Tả</th>
+                    <th>Giá</th>
+                    <th>Tồn Kho</th>
+                    <th>Danh Mục</th>
+                    <th>Ngày Tạo</th>
+                    <th>Hành động</th>
                 </tr>
             </thead>
             <tbody>
@@ -51,10 +51,10 @@
                                 <i class="fas fa-eye"></i> Xem
                             </a>
                             <a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-warning btn-sm btn-action">
-                                <i class="fas fa-edit"></i> S?a
+                                <i class="fas fa-edit"></i> Sửa
                             </a>
                             <a asp-action="Delete" asp-route-id="@item.ProductId" class="btn btn-danger btn-sm btn-action">
-                                <i class="fas fa-trash"></i> X�a
+                                <i class="fas fa-trash"></i> Xóa
                             </a>
                         </td>
                     </tr>
@@ -66,6 +66,6 @@
 else
 {
     <div class="alert alert-info">
-        <p>Kh�ng c� s?n ph?m n�o. <a asp-action="Create">Th�m s?n ph?m m?i</a></p>
+        <p>Không có sản phẩm nào. <a asp-action="Create">Thêm sản phẩm mới</a></p>
     </div>
 }

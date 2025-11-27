@@ -1,7 +1,7 @@
-@model QlyKhachHang.Models.Product
+﻿@model QlyKhachHang.Models.Product
 
 @{
-    ViewData["Title"] = "S?a S?n Ph?m";
+    ViewData["Title"] = "Sửa Sản Phẩm";
 }
 
 <div class="row">
@@ -15,47 +15,47 @@
             <input type="hidden" asp-for="CreatedDate" />
 
             <div class="mb-3">
-                <label asp-for="ProductName" class="form-label">T�n S?n Ph?m</label>
+                <label asp-for="ProductName" class="form-label">Tên Sản Phẩm</label>
                 <input asp-for="ProductName" class="form-control" />
                 <span asp-validation-for="ProductName" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
-                <label asp-for="Description" class="form-label">M� T?</label>
+                <label asp-for="Description" class="form-label">Mô Tả</label>
                 <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
 
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label asp-for="Price" class="form-label">Gi� (VN?)</label>
+                    <label asp-for="Price" class="form-label">Giá (VNĐ)</label>
                     <input asp-for="Price" type="number" class="form-control" step="1000" />
                     <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
 
                 <div class="col-md-6 mb-3">
-                    <label asp-for="Stock" class="form-label">T?n Kho</label>
+                    <label asp-for="Stock" class="form-label">Tồn Kho</label>
                     <input asp-for="Stock" type="number" class="form-control" />
                     <span asp-validation-for="Stock" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="mb-3">
-                <label asp-for="Category" class="form-label">Danh M?c</label>
+                <label asp-for="Category" class="form-label">Danh Mục</label>
                 <select asp-for="Category" class="form-control">
-                    <option value="">-- Ch?n Danh M?c --</option>
-                    <option value="�o">�o</option>
-                    <option value="Qu?n">Qu?n</option>
-                    <option value="V�y">V�y</option>
-                    <option value="Gi�y">Gi�y</option>
-                    <option value="Ph? Ki?n">Ph? Ki?n</option>
+                    <option value="">-- Chọn Danh Mục --</option>
+                    <option value="Áo">Áo</option>
+                    <option value="Quần">Quần</option>
+                    <option value="Váy">Váy</option>
+                    <option value="Giày">Giày</option>
+                    <option value="Phụ Kiện">Phụ Kiện</option>
                 </select>
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
-                <a asp-action="Index" class="btn btn-secondary">H?y</a>
-                <button type="submit" class="btn btn-primary">C?p Nh?t</button>
+                <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+                <button type="submit" class="btn btn-primary">Cập Nhật</button>
             </div>
         </form>
     </div>

@@ -1,4 +1,4 @@
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 using QlyKhachHang.Data;
 using QlyKhachHang.Models;
@@ -62,16 +62,16 @@ namespace QlyKhachHang.Services
         {
             try
             {
-                // Ki?m tra username ?� t?n t?i
+                // Kiểm tra username đã tồn tại
                 if (await _context.Customers.AnyAsync(c => c.Username == model.Username))
                 {
-                    return (false, "T�n ??ng nh?p ?� t?n t?i");
+                    return (false, "Tên đăng nhập đã tồn tại");
                 }
 
-                // Ki?m tra email ?� t?n t?i
+                // Kiểm tra email đã tồn tại
                 if (await _context.Customers.AnyAsync(c => c.Email == model.Email))
                 {
-                    return (false, "Email ?� ???c s? d?ng");
+                    return (false, "Email đã được sử dụng");
                 }
 
                 var customer = new Customer
@@ -92,12 +92,12 @@ namespace QlyKhachHang.Services
                 await _context.SaveChangesAsync();
 
                 _logger.LogInformation($"New customer registered: {model.Username}");
-                return (true, "??ng k� th�nh c�ng");
+                return (true, "Đăng ký thành công");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error during registration");
-                return (false, "C� l?i khi ??ng k�");
+                return (false, "Có lỗi khi đăng ký");
             }
         }
 

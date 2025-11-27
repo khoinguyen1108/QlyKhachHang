@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QlyKhachHang.Data;
@@ -39,7 +39,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading cart items");
-                TempData["Error"] = "C� l?i khi t?i danh s�ch m?t h�ng";
+                TempData["Error"] = "Có lỗi khi tải danh sách mặt hàng";
                 return View(new List<CartItem>());
             }
         }
@@ -70,7 +70,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading cart item details");
-                TempData["Error"] = "C� l?i khi t?i chi ti?t m?t h�ng";
+                TempData["Error"] = "Có lỗi khi tải chi tiết mặt hàng";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -110,7 +110,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading create form");
-                TempData["Error"] = "C� l?i khi t?i form t?o m?t h�ng";
+                TempData["Error"] = "Có lỗi khi tải form tạo mặt hàng";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -128,7 +128,7 @@ namespace QlyKhachHang.Controllers
                     var cart = await _context.Carts.FindAsync(cartItem.CartId);
                     if (cart == null)
                     {
-                        ModelState.AddModelError("CartId", "Gi? h�ng kh�ng t?n t?i");
+                        ModelState.AddModelError("CartId", "Giỏ hàng không tồn tại");
                     }
                     else
                     {
@@ -136,11 +136,11 @@ namespace QlyKhachHang.Controllers
                         var product = await _context.Products.FindAsync(cartItem.ProductId);
                         if (product == null)
                         {
-                            ModelState.AddModelError("ProductId", "S?n ph?m kh�ng t?n t?i");
+                            ModelState.AddModelError("ProductId", "Sản phẩm không tồn tại");
                         }
                         else if (product.Stock < cartItem.Quantity)
                         {
-                            ModelState.AddModelError("Quantity", "S? l??ng v??t qu� t?n kho");
+                            ModelState.AddModelError("Quantity", "Số lượng vượt quá tồn kho");
                         }
                         else
                         {
@@ -153,7 +153,7 @@ namespace QlyKhachHang.Controllers
                             cartItem.AddedDate = DateTime.Now;
                             _context.Add(cartItem);
                             await _context.SaveChangesAsync();
-                            TempData["Success"] = "Th�m m?t h�ng v�o gi? h�ng th�nh c�ng";
+                            TempData["Success"] = "Thêm mặt hàng vào giỏ hàng thành công";
                             return RedirectToAction(nameof(Index), new { cartId = cartItem.CartId });
                         }
                     }
@@ -161,7 +161,7 @@ namespace QlyKhachHang.Controllers
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error creating cart item");
-                    ModelState.AddModelError("", "C� l?i khi th�m m?t h�ng");
+                    ModelState.AddModelError("", "Có lỗi khi thêm mặt hàng");
                 }
             }
 
@@ -219,7 +219,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading cart item for edit");
-                TempData["Error"] = "C� l?i khi t?i m?t h�ng";
+                TempData["Error"] = "Có lỗi khi tải mặt hàng";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -242,13 +242,13 @@ namespace QlyKhachHang.Controllers
                     var product = await _context.Products.FindAsync(cartItem.ProductId);
                     if (product != null && product.Stock < cartItem.Quantity)
                     {
-                        ModelState.AddModelError("Quantity", "S? l??ng v??t qu� t?n kho");
+                        ModelState.AddModelError("Quantity", "Số lượng vượt quá tồn kho");
                     }
                     else
                     {
                         _context.Update(cartItem);
                         await _context.SaveChangesAsync();
-                        TempData["Success"] = "C?p nh?t m?t h�ng th�nh c�ng";
+                        TempData["Success"] = "Cập nhật mặt hàng thành công";
                         return RedirectToAction(nameof(Index), new { cartId = cartItem.CartId });
                     }
                 }
@@ -267,7 +267,7 @@ namespace QlyKhachHang.Controllers
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error editing cart item");
-                    ModelState.AddModelError("", "C� l?i khi c?p nh?t m?t h�ng");
+                    ModelState.AddModelError("", "Có lỗi khi cập nhật mặt hàng");
                 }
             }
 
@@ -315,7 +315,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading cart item for delete");
-                TempData["Error"] = "C� l?i khi t?i m?t h�ng";
+                TempData["Error"] = "Có lỗi khi tải mặt hàng";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -333,14 +333,14 @@ namespace QlyKhachHang.Controllers
                     int cartId = cartItem.CartId;
                     _context.CartItems.Remove(cartItem);
                     await _context.SaveChangesAsync();
-                    TempData["Success"] = "X�a m?t h�ng kh?i gi? h�ng th�nh c�ng";
+                    TempData["Success"] = "Xóa mặt hàng khỏi giỏ hàng thành công";
                     return RedirectToAction(nameof(Index), new { cartId = cartId });
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error deleting cart item");
-                TempData["Error"] = "C� l?i khi x�a m?t h�ng";
+                TempData["Error"] = "Có lỗi khi xóa mặt hàng";
             }
 
             return RedirectToAction(nameof(Index));

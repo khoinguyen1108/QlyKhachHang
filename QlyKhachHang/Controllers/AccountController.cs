@@ -1,26 +1,22 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using QlyKhachHang.Models;
 using QlyKhachHang.Services;
-
 namespace QlyKhachHang.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IAuthenticationService _authService;
         private readonly ILogger<AccountController> _logger;
-
         public AccountController(IAuthenticationService authService, ILogger<AccountController> logger)
         {
             _authService = authService;
             _logger = logger;
         }
-
         // GET: Account/Register
         public IActionResult Register()
         {
             return View();
         }
-
         // POST: Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -30,12 +26,10 @@ namespace QlyKhachHang.Controllers
             {
                 return View(model);
             }
-
             var (success, message) = await _authService.RegisterAsync(model);
-
             if (success)
             {
-                TempData["Success"] = message + ". Vui l�ng ??ng nh?p.";
+                TempData["Success"] = message + ". Vui lòng đăng nhập.";
                 return RedirectToAction(nameof(Login));
             }
             else
@@ -44,14 +38,12 @@ namespace QlyKhachHang.Controllers
                 return View(model);
             }
         }
-
         // GET: Account/Login
         public IActionResult Login(string? returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
-
         // POST: Account/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -61,51 +53,40 @@ namespace QlyKhachHang.Controllers
             {
                 return View(model);
             }
-
             var customer = await _authService.LoginAsync(model.UsernameOrEmail, model.Password);
-
             if (customer == null)
             {
-                ModelState.AddModelError("", "T�n ??ng nh?p/email ho?c m?t kh?u kh�ng ch�nh x�c");
+                ModelState.AddModelError("", "Tên đăng nhập/email hoặc mật khẩu không chính xác");
                 return View(model);
             }
-
             // Set session
             HttpContext.Session.SetInt32("CustomerId", customer.CustomerId);
             HttpContext.Session.SetString("CustomerName", customer.CustomerName);
             HttpContext.Session.SetString("CustomerEmail", customer.Email);
-
             // Update last login
             await _authService.UpdateLastLoginAsync(customer.CustomerId);
-
-            TempData["Success"] = $"Ch�o m?ng {customer.CustomerName}!";
-
+            TempData["Success"] = $"Chào mừng {customer.CustomerName}!";
             if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);
             }
-
             return RedirectToAction("Index", "Home");
         }
-
         // GET: Account/Profile
         public IActionResult Profile()
         {
             var customerId = HttpContext.Session.GetInt32("CustomerId");
-
             if (customerId == null)
             {
                 return RedirectToAction(nameof(Login));
             }
-
             return View();
         }
-
         // GET: Account/Logout
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            TempData["Success"] = "??ng xu?t th�nh c�ng";
+            TempData["Success"] = "Đăng xuất thành công";
             return RedirectToAction("Index", "Home");
         }
     }

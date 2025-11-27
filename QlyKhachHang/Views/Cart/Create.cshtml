@@ -1,7 +1,7 @@
-@model QlyKhachHang.Models.Cart
+﻿@model QlyKhachHang.Models.Cart
 
 @{
-    ViewData["Title"] = "T?o Gi? H�ng";
+    ViewData["Title"] = "Tạo Giỏ Hàng";
 }
 
 <div class="row">
@@ -12,19 +12,19 @@
             <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
             <div class="mb-3">
-                <label asp-for="CustomerId" class="form-label">Kh�ch H�ng</label>
+                <label asp-for="CustomerId" class="form-label">Khách Hàng</label>
                 @{
                     var items = ViewData["CustomerId"] as SelectList;
                 }
                 <select asp-for="CustomerId" asp-items="items" class="form-control">
-                    <option value="">-- Ch?n Kh�ch H�ng --</option>
+                    <option value="">-- Chọn Khách Hàng --</option>
                 </select>
                 <span asp-validation-for="CustomerId" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
-                <a asp-action="Index" class="btn btn-secondary">H?y</a>
-                <button type="submit" class="btn btn-primary">T?o</button>
+                <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+                <button type="submit" class="btn btn-primary">Tạo</button>
             </div>
         </form>
     </div>

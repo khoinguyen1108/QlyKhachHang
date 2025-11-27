@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+ï»¿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QlyKhachHang.Data;
@@ -33,7 +33,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading reviews");
-                TempData["Error"] = "Có l?i khi t?i danh sách ?ánh giá";
+                TempData["Error"] = "CÃ³ lá»—i khi táº£i danh sÃ¡ch Ä‘Ã¡nh giÃ¡";
                 return View(new List<Review>());
             }
         }
@@ -63,7 +63,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading review details");
-                TempData["Error"] = "Có l?i khi t?i chi ti?t ?ánh giá";
+                TempData["Error"] = "CÃ³ lá»—i khi táº£i chi tiáº¿t Ä‘Ã¡nh giÃ¡";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -88,7 +88,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading create form");
-                TempData["Error"] = "Có l?i khi t?i form t?o ?ánh giá";
+                TempData["Error"] = "CÃ³ lá»—i khi táº£i form táº¡o Ä‘Ã¡nh giÃ¡";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -108,21 +108,21 @@ namespace QlyKhachHang.Controllers
 
                     if (existingReview != null)
                     {
-                        ModelState.AddModelError("", "Khách hàng này ?ã ?ánh giá s?n ph?m này r?i");
+                        ModelState.AddModelError("", "KhÃ¡ch hÃ ng nÃ y Ä‘Ã£ Ä‘Ã¡nh giÃ¡ sáº£n pháº©m nÃ y rá»“i");
                     }
                     else
                     {
                         review.CreatedDate = DateTime.Now;
                         _context.Add(review);
                         await _context.SaveChangesAsync();
-                        TempData["Success"] = "Thêm ?ánh giá thành công";
+                        TempData["Success"] = "ThÃªm Ä‘Ã¡nh giÃ¡ thÃ nh cÃ´ng";
                         return RedirectToAction(nameof(Index));
                     }
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error creating review");
-                    ModelState.AddModelError("", "Có l?i khi thêm ?ánh giá");
+                    ModelState.AddModelError("", "CÃ³ lá»—i khi thÃªm Ä‘Ã¡nh giÃ¡");
                 }
             }
 
@@ -174,7 +174,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading review for edit");
-                TempData["Error"] = "Có l?i khi t?i ?ánh giá";
+                TempData["Error"] = "CÃ³ lá»—i khi táº£i Ä‘Ã¡nh giÃ¡";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -196,7 +196,7 @@ namespace QlyKhachHang.Controllers
                     review.ModifiedDate = DateTime.Now;
                     _context.Update(review);
                     await _context.SaveChangesAsync();
-                    TempData["Success"] = "C?p nh?t ?ánh giá thành công";
+                    TempData["Success"] = "Cáº­p nháº­t Ä‘Ã¡nh giÃ¡ thÃ nh cÃ´ng";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException ex)
@@ -214,7 +214,7 @@ namespace QlyKhachHang.Controllers
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error editing review");
-                    ModelState.AddModelError("", "Có l?i khi c?p nh?t ?ánh giá");
+                    ModelState.AddModelError("", "CÃ³ lá»—i khi cáº­p nháº­t Ä‘Ã¡nh giÃ¡");
                 }
             }
 
@@ -258,7 +258,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading review for delete");
-                TempData["Error"] = "Có l?i khi t?i ?ánh giá";
+                TempData["Error"] = "CÃ³ lá»—i khi táº£i Ä‘Ã¡nh giÃ¡";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -275,13 +275,13 @@ namespace QlyKhachHang.Controllers
                 {
                     _context.Reviews.Remove(review);
                     await _context.SaveChangesAsync();
-                    TempData["Success"] = "Xóa ?ánh giá thành công";
+                    TempData["Success"] = "XÃ³a Ä‘Ã¡nh giÃ¡ thÃ nh cÃ´ng";
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error deleting review");
-                TempData["Error"] = "Có l?i khi xóa ?ánh giá";
+                TempData["Error"] = "CÃ³ lá»—i khi xÃ³a Ä‘Ã¡nh giÃ¡";
             }
 
             return RedirectToAction(nameof(Index));

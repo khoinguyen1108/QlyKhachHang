@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QlyKhachHang.Data;
@@ -34,7 +34,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading invoices");
-                TempData["Error"] = "C� l?i khi t?i danh s�ch h�a ??n";
+                TempData["Error"] = "Có lỗi khi tải danh sách hóa đơn";
                 return View(new List<Invoice>());
             }
         }
@@ -65,7 +65,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading invoice details");
-                TempData["Error"] = "C� l?i khi t?i chi ti?t h�a ??n";
+                TempData["Error"] = "Có lỗi khi tải chi tiết hóa đơn";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -85,7 +85,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading create form");
-                TempData["Error"] = "C� l?i khi t?i form t?o h�a ??n";
+                TempData["Error"] = "Có lỗi khi tải form tạo hóa đơn";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -108,13 +108,13 @@ namespace QlyKhachHang.Controllers
                     invoice.CreatedDate = DateTime.Now;
                     _context.Add(invoice);
                     await _context.SaveChangesAsync();
-                    TempData["Success"] = "T?o h�a ??n th�nh c�ng";
+                    TempData["Success"] = "Tạo hóa đơn thành công";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error creating invoice");
-                    ModelState.AddModelError("", "C� l?i khi t?o h�a ??n");
+                    ModelState.AddModelError("", "Có lỗi khi tạo hóa đơn");
                 }
             }
 
@@ -154,7 +154,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading invoice for edit");
-                TempData["Error"] = "C� l?i khi t?i h�a ??n";
+                TempData["Error"] = "Có lỗi khi tải hóa đơn";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -176,7 +176,7 @@ namespace QlyKhachHang.Controllers
                     invoice.ModifiedDate = DateTime.Now;
                     _context.Update(invoice);
                     await _context.SaveChangesAsync();
-                    TempData["Success"] = "C?p nh?t h�a ??n th�nh c�ng";
+                    TempData["Success"] = "Cập nhật hóa đơn thành công";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException ex)
@@ -194,7 +194,7 @@ namespace QlyKhachHang.Controllers
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error editing invoice");
-                    ModelState.AddModelError("", "C� l?i khi c?p nh?t h�a ??n");
+                    ModelState.AddModelError("", "Có lỗi khi cập nhật hóa đơn");
                 }
             }
 
@@ -231,7 +231,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading invoice for delete");
-                TempData["Error"] = "C� l?i khi t?i h�a ??n";
+                TempData["Error"] = "Có lỗi khi tải hóa đơn";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -253,13 +253,13 @@ namespace QlyKhachHang.Controllers
                     _context.InvoiceDetails.RemoveRange(invoice.InvoiceDetails);
                     _context.Invoices.Remove(invoice);
                     await _context.SaveChangesAsync();
-                    TempData["Success"] = "X�a h�a ??n th�nh c�ng";
+                    TempData["Success"] = "Xóa hóa đơn thành công";
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error deleting invoice");
-                TempData["Error"] = "C� l?i khi x�a h�a ??n";
+                TempData["Error"] = "Có lỗi khi xóa hóa đơn";
             }
 
             return RedirectToAction(nameof(Index));

@@ -1,7 +1,7 @@
-@model QlyKhachHang.Models.Product
+﻿@model QlyKhachHang.Models.Product
 
 @{
-    ViewData["Title"] = "Chi Ti?t S?n Ph?m";
+    ViewData["Title"] = "Chi Tiết Sản Phẩm";
 }
 
 <div class="row mb-3">
@@ -10,12 +10,12 @@
     </div>
     <div class="col-md-4 text-end">
         <a asp-action="Edit" asp-route-id="@Model.ProductId" class="btn btn-warning">
-            <i class="fas fa-edit"></i> S?a
+            <i class="fas fa-edit"></i> Sửa
         </a>
         <a asp-action="Delete" asp-route-id="@Model.ProductId" class="btn btn-danger">
-            <i class="fas fa-trash"></i> X�a
+            <i class="fas fa-trash"></i> Xóa
         </a>
-        <a asp-action="Index" class="btn btn-secondary">Quay L?i</a>
+        <a asp-action="Index" class="btn btn-secondary">Quay Lại</a>
     </div>
 </div>
 
@@ -23,33 +23,33 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">Th�ng Tin S?n Ph?m</h5>
+                <h5 class="mb-0">Thông Tin Sản Phẩm</h5>
             </div>
             <div class="card-body">
                 <dl class="row">
                     <dt class="col-sm-3">ID:</dt>
                     <dd class="col-sm-9">@Model.ProductId</dd>
 
-                    <dt class="col-sm-3">T�n:</dt>
+                    <dt class="col-sm-3">Tên:</dt>
                     <dd class="col-sm-9">@Model.ProductName</dd>
 
-                    <dt class="col-sm-3">M� T?:</dt>
+                    <dt class="col-sm-3">Mô Tả:</dt>
                     <dd class="col-sm-9">@Model.Description</dd>
 
-                    <dt class="col-sm-3">Gi�:</dt>
+                    <dt class="col-sm-3">Giá:</dt>
                     <dd class="col-sm-9">@Model.Price.ToString("C0")</dd>
 
-                    <dt class="col-sm-3">T?n Kho:</dt>
+                    <dt class="col-sm-3">Tồn Kho:</dt>
                     <dd class="col-sm-9">
                         <span class="badge @(Model.Stock > 0 ? "bg-success" : "bg-danger")">
                             @Model.Stock
                         </span>
                     </dd>
 
-                    <dt class="col-sm-3">Danh M?c:</dt>
+                    <dt class="col-sm-3">Danh Mục:</dt>
                     <dd class="col-sm-9">@Model.Category</dd>
 
-                    <dt class="col-sm-3">Ng�y T?o:</dt>
+                    <dt class="col-sm-3">Ngày Tạo:</dt>
                     <dd class="col-sm-9">@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")</dd>
                 </dl>
             </div>
@@ -59,26 +59,26 @@
         {
             <div class="card mt-4">
                 <div class="card-header bg-info text-white">
-                    <h5 class="mb-0">Th?ng K�</h5>
+                    <h5 class="mb-0">Thống Kê</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4">
                             <div class="text-center p-3 bg-light rounded">
                                 <h3>@Model.CartItems.Count</h3>
-                                <p>M?t h�ng trong gi? h�ng</p>
+                                <p>Số mục trong giỏ hàng</p>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="text-center p-3 bg-light rounded">
                                 <h3>@Model.Reviews.Count</h3>
-                                <p>?�nh gi�</p>
+                                <p>Số đánh giá</p>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="text-center p-3 bg-light rounded">
                                 <h3>@Model.InvoiceDetails.Count</h3>
-                                <p>M?t h�ng ?� b�n</p>
+                                <p>Số hàng đã bán</p>
                             </div>
                         </div>
                     </div>
