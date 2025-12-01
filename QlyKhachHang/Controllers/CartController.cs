@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QlyKhachHang.Data;
@@ -34,7 +34,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading carts");
-                TempData["Error"] = "C� l?i khi t?i danh s�ch gi? h�ng";
+                TempData["Error"] = "Có lỗi khi tải danh sách giỏ hàng";
                 return View(new List<Cart>());
             }
         }
@@ -65,7 +65,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading cart details");
-                TempData["Error"] = "C� l?i khi t?i chi ti?t gi? h�ng";
+                TempData["Error"] = "Có lỗi khi tải chi tiết giỏ hàng";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -84,7 +84,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading create form");
-                TempData["Error"] = "C� l?i khi t?i form t?o gi? h�ng";
+                TempData["Error"] = "Có lỗi khi tải form tạo giỏ hàng";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -101,13 +101,13 @@ namespace QlyKhachHang.Controllers
                     cart.CreatedDate = DateTime.Now;
                     _context.Add(cart);
                     await _context.SaveChangesAsync();
-                    TempData["Success"] = "T?o gi? h�ng th�nh c�ng";
+                    TempData["Success"] = "Tạo giỏ hàng thành công";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error creating cart");
-                    ModelState.AddModelError("", "C� l?i khi t?o gi? h�ng");
+                    ModelState.AddModelError("", "Có lỗi khi tạo giỏ hàng");
                 }
             }
 
@@ -145,7 +145,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading cart for edit");
-                TempData["Error"] = "C� l?i khi t?i gi? h�ng";
+                TempData["Error"] = "Có lỗi khi tải giỏ hàng";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -167,7 +167,7 @@ namespace QlyKhachHang.Controllers
                     cart.ModifiedDate = DateTime.Now;
                     _context.Update(cart);
                     await _context.SaveChangesAsync();
-                    TempData["Success"] = "C?p nh?t gi? h�ng th�nh c�ng";
+                    TempData["Success"] = "Cập nhật giỏ hàng thành công";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException ex)
@@ -185,7 +185,7 @@ namespace QlyKhachHang.Controllers
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error editing cart");
-                    ModelState.AddModelError("", "C� l?i khi c?p nh?t gi? h�ng");
+                    ModelState.AddModelError("", "Có lỗi khi cập nhật giỏ hàng");
                 }
             }
 
@@ -221,7 +221,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading cart for delete");
-                TempData["Error"] = "C� l?i khi t?i gi? h�ng";
+                TempData["Error"] = "Có lỗi khi tải giỏ hàng";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -243,13 +243,13 @@ namespace QlyKhachHang.Controllers
                     _context.CartItems.RemoveRange(cart.CartItems);
                     _context.Carts.Remove(cart);
                     await _context.SaveChangesAsync();
-                    TempData["Success"] = "X�a gi? h�ng th�nh c�ng";
+                    TempData["Success"] = "Xóa giỏ hàng thành công";
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error deleting cart");
-                TempData["Error"] = "C� l?i khi x�a gi? h�ng";
+                TempData["Error"] = "Có lỗi khi xóa giỏ hàng";
             }
 
             return RedirectToAction(nameof(Index));

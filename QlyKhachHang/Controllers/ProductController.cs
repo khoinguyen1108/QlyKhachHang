@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QlyKhachHang.Data;
 using QlyKhachHang.Models;
@@ -30,7 +30,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading products");
-                TempData["Error"] = "C� l?i khi t?i danh s�ch s?n ph?m";
+                TempData["Error"] = "Có lỗi khi tải danh sách sản phẩm";
                 return View(new List<Product>());
             }
         }
@@ -61,7 +61,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading product details");
-                TempData["Error"] = "C� l?i khi t?i chi ti?t s?n ph?m";
+                TempData["Error"] = "Có lỗi khi tải chi tiết sản phẩm";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -84,13 +84,13 @@ namespace QlyKhachHang.Controllers
                     product.CreatedDate = DateTime.Now;
                     _context.Add(product);
                     await _context.SaveChangesAsync();
-                    TempData["Success"] = "Th�m s?n ph?m th�nh c�ng";
+                    TempData["Success"] = "Thêm sản phẩm thành công";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error creating product");
-                    ModelState.AddModelError("", "C� l?i khi th�m s?n ph?m");
+                    ModelState.AddModelError("", "Có lỗi khi thêm sản phẩm");
                 }
             }
             return View(product);
@@ -116,7 +116,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading product for edit");
-                TempData["Error"] = "C� l?i khi t?i s?n ph?m";
+                TempData["Error"] = "Có lỗi khi tải sản phẩm";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -137,7 +137,7 @@ namespace QlyKhachHang.Controllers
                 {
                     _context.Update(product);
                     await _context.SaveChangesAsync();
-                    TempData["Success"] = "C?p nh?t s?n ph?m th�nh c�ng";
+                    TempData["Success"] = "Cập nhật sản phẩm thành công";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException ex)
@@ -155,7 +155,7 @@ namespace QlyKhachHang.Controllers
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error editing product");
-                    ModelState.AddModelError("", "C� l?i khi c?p nh?t s?n ph?m");
+                    ModelState.AddModelError("", "Có lỗi khi cập nhật sản phẩm");
                 }
             }
             return View(product);
@@ -182,7 +182,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading product for delete");
-                TempData["Error"] = "C� l?i khi t?i s?n ph?m";
+                TempData["Error"] = "Có lỗi khi tải sản phẩm";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -204,19 +204,19 @@ namespace QlyKhachHang.Controllers
 
                     if (hasCartItems || hasReviews || hasInvoiceDetails)
                     {
-                        TempData["Error"] = "Kh�ng th? x�a s?n ph?m v� c�n d? li?u li�n quan (Gi? h�ng, ?�nh gi�, H�a ??n)";
+                        TempData["Error"] = "Không thể xóa sản phẩm vì còn dữ liệu liên quan (Giỏ hàng, Đánh giá, Hóa đơn)";
                         return RedirectToAction(nameof(Index));
                     }
 
                     _context.Products.Remove(product);
                     await _context.SaveChangesAsync();
-                    TempData["Success"] = "X�a s?n ph?m th�nh c�ng";
+                    TempData["Success"] = "Xóa sản phẩm thành công";
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error deleting product");
-                TempData["Error"] = "C� l?i khi x�a s?n ph?m";
+                TempData["Error"] = "Có lỗi khi xóa sản phẩm";
             }
 
             return RedirectToAction(nameof(Index));

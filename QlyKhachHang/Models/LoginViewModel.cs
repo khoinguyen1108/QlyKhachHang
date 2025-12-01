@@ -1,21 +1,21 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace QlyKhachHang.Models
 {
     public class LoginViewModel
     {
-        [Required(ErrorMessage = "T�n ??ng nh?p ho?c email l� b?t bu?c")]
+        [Required(ErrorMessage = "Tên đăng nhập hoặc email là bắt buộc")]
         [StringLength(100)]
-        [Display(Name = "T�n ??ng Nh?p ho?c Email")]
+        [Display(Name = "Tên đăng nhập hoặc Email")]
         public string UsernameOrEmail { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "M?t kh?u l� b?t bu?c")]
+        [Required(ErrorMessage = "Mật khẩu là bắt buộc")]
         [StringLength(100)]
         [DataType(DataType.Password)]
-        [Display(Name = "M?t Kh?u")]
+        [Display(Name = "Mật khẩu")]
         public string Password { get; set; } = string.Empty;
 
-        [Display(Name = "Nh? T�i")]
+        [Display(Name = "Nhớ tôi")]
         public bool RememberMe { get; set; }
     }
 }

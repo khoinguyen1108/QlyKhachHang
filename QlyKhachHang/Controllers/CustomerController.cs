@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+Ôªøusing Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QlyKhachHang.Data;
 using QlyKhachHang.Models;
@@ -27,7 +27,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading customers");
-                TempData["Error"] = "CÛ l?i khi t?i danh s·ch kh·ch h‡ng";
+                TempData["Error"] = "C√≥ l·ªói khi t·∫£i danh s√°ch kh√°ch h√†ng";
                 return View(new List<Customer>());
             }
         }
@@ -58,7 +58,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading customer details");
-                TempData["Error"] = "CÛ l?i khi t?i chi ti?t kh·ch h‡ng";
+                TempData["Error"] = "C√≥ l·ªói khi t·∫£i chi ti·∫øt kh√°ch h√†ng";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -81,18 +81,18 @@ namespace QlyKhachHang.Controllers
                     customer.CreatedDate = DateTime.Now;
                     _context.Add(customer);
                     await _context.SaveChangesAsync();
-                    TempData["Success"] = "ThÍm kh·ch h‡ng th‡nh cÙng";
+                    TempData["Success"] = "Th√™m kh√°ch h√†ng th√†nh c√¥ng";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateException ex)
                 {
                     _logger.LogError(ex, "Error creating customer");
-                    ModelState.AddModelError("", "L?i l?u d? li?u. Ki?m tra xem email ho?c s? ?i?n tho?i ?„ t?n t?i ch?a.");
+                    ModelState.AddModelError("", "L·ªói l∆∞u d·ªØ li·ªáu. Ki·ªÉm tra xem email ho·∫∑c s·ªë ƒëi·ªán tho·∫°i ƒë√£ t·ªìn t·∫°i ch∆∞a.");
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Unexpected error creating customer");
-                    ModelState.AddModelError("", "CÛ l?i b?t ng? khi thÍm kh·ch h‡ng");
+                    ModelState.AddModelError("", "C√≥ l·ªói b·∫•t ng·ªù khi th√™m kh√°ch h√†ng");
                 }
             }
             return View(customer);
@@ -118,7 +118,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading customer for edit");
-                TempData["Error"] = "CÛ l?i khi t?i thÙng tin kh·ch h‡ng";
+                TempData["Error"] = "C√≥ l·ªói khi t·∫£i th√¥ng tin kh√°ch h√†ng";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -140,7 +140,7 @@ namespace QlyKhachHang.Controllers
                     customer.ModifiedDate = DateTime.Now;
                     _context.Update(customer);
                     await _context.SaveChangesAsync();
-                    TempData["Success"] = "C?p nh?t kh·ch h‡ng th‡nh cÙng";
+                    TempData["Success"] = "C·∫≠p nh·∫≠t kh√°ch h√†ng th√†nh c√¥ng";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException ex)
@@ -158,7 +158,7 @@ namespace QlyKhachHang.Controllers
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error editing customer");
-                    ModelState.AddModelError("", "CÛ l?i khi c?p nh?t kh·ch h‡ng");
+                    ModelState.AddModelError("", "C√≥ l·ªói khi c·∫≠p nh·∫≠t kh√°ch h√†ng");
                 }
             }
             return View(customer);
@@ -185,7 +185,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading customer for delete");
-                TempData["Error"] = "CÛ l?i khi t?i thÙng tin kh·ch h‡ng";
+                TempData["Error"] = "C√≥ l·ªói khi t·∫£i th√¥ng tin kh√°ch h√†ng";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -207,19 +207,19 @@ namespace QlyKhachHang.Controllers
 
                     if (hasInvoices || hasReviews || hasCarts)
                     {
-                        TempData["Error"] = "KhÙng th? xÛa kh·ch h‡ng vÏ cÚn d? li?u liÍn quan (HÛa ??n, ?·nh gi·, Gi? h‡ng)";
+                        TempData["Error"] = "Kh√¥ng th·ªÉ x√≥a kh√°ch h√†ng v√¨ c√≤n d·ªØ li·ªáu li√™n quan (H√≥a ƒë∆°n, ƒê√°nh gi√°, Gi·ªè h√†ng)";
                         return RedirectToAction(nameof(Index));
                     }
 
                     _context.Customers.Remove(customer);
                     await _context.SaveChangesAsync();
-                    TempData["Success"] = "XÛa kh·ch h‡ng th‡nh cÙng";
+                    TempData["Success"] = "X√≥a kh√°ch h√†ng th√†nh c√¥ng";
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error deleting customer");
-                TempData["Error"] = "CÛ l?i khi xÛa kh·ch h‡ng";
+                TempData["Error"] = "C√≥ l·ªói khi x√≥a kh√°ch h√†ng";
             }
 
             return RedirectToAction(nameof(Index));

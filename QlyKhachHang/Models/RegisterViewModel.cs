@@ -1,56 +1,56 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace QlyKhachHang.Models
 {
     public class RegisterViewModel
     {
-        [Required(ErrorMessage = "T�n kh�ch h�ng l� b?t bu?c")]
-        [StringLength(100, ErrorMessage = "T�n kh�ng ???c v??t qu� 100 k� t?")]
-        [Display(Name = "T�n Kh�ch H�ng")]
+        [Required(ErrorMessage = "Tên khách hàng là bắt buộc")]
+        [StringLength(100, ErrorMessage = "Tên không được vượt quá 100 ký tự")]
+        [Display(Name = "Tên Khách Hàng")]
         public string CustomerName { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "T�n ??ng nh?p l� b?t bu?c")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "T�n ??ng nh?p ph?i t? 3 ??n 50 k� t?")]
-        [RegularExpression(@"^[a-zA-Z0-9_.-]+$", ErrorMessage = "T�n ??ng nh?p ch? ch?a ch?, s?, d?u g?ch, d?u ch?m")]
-        [Display(Name = "T�n ??ng Nh?p")]
+        [Required(ErrorMessage = "Tên đăng nhập là bắt buộc")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Tên đăng nhập phải từ 3 đến 50 ký tự")]
+        [RegularExpression(@"^[a-zA-Z0-9_.-]+$", ErrorMessage = "Tên đăng nhập chỉ chứa chữ, số, dấu gạch, dấu chấm")]
+        [Display(Name = "Tên Đăng Nhập")]
         public string Username { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Email l� b?t bu?c")]
-        [EmailAddress(ErrorMessage = "Email kh�ng h?p l?")]
+        [Required(ErrorMessage = "Email là bắt buộc")]
+        [EmailAddress(ErrorMessage = "Email không hợp lệ")]
         [Display(Name = "Email")]
         public string Email { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "S? ?i?n tho?i l� b?t bu?c")]
-        [Phone(ErrorMessage = "S? ?i?n tho?i kh�ng h?p l?")]
-        [Display(Name = "S? ?i?n Tho?i")]
+        [Required(ErrorMessage = "Số điện thoại là bắt buộc")]
+        [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
+        [Display(Name = "Số Điện Thoại")]
         public string Phone { get; set; } = string.Empty;
 
         [StringLength(200)]
-        [Display(Name = "??a Ch?")]
+        [Display(Name = "Địa Chỉ")]
         public string Address { get; set; } = string.Empty;
 
         [StringLength(50)]
-        [Display(Name = "Th�nh Ph?")]
+        [Display(Name = "Thành Phố")]
         public string City { get; set; } = string.Empty;
 
         [StringLength(20)]
-        [Display(Name = "M� B?u ?i?n")]
+        [Display(Name = "Mã Bưu Điện")]
         public string PostalCode { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "M?t kh?u l� b?t bu?c")]
-        [StringLength(100, MinimumLength = 6, ErrorMessage = "M?t kh?u ph?i t? 6 ??n 100 k� t?")]
+        [Required(ErrorMessage = "Mật khẩu là bắt buộc")]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "Mật khẩu phải từ 6 đến 100 ký tự")]
         [DataType(DataType.Password)]
-        [Display(Name = "M?t Kh?u")]
+        [Display(Name = "Mật Khẩu")]
         public string Password { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "X�c nh?n m?t kh?u l� b?t bu?c")]
+        [Required(ErrorMessage = "Xác nhận mật khẩu là bắt buộc")]
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "M?t kh?u x�c nh?n kh�ng kh?p")]
-        [Display(Name = "X�c Nh?n M?t Kh?u")]
+        [Compare("Password", ErrorMessage = "Mật khẩu xác nhận không khớp")]
+        [Display(Name = "Xác Nhận Mật Khẩu")]
         public string ConfirmPassword { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "B?n ph?i ??ng � v?i ?i?u kho?n")]
-        [Display(Name = "T�i ??ng � V?i ?i?u Kho?n")]
+        [Required(ErrorMessage = "Bạn phải đồng ý với điều khoản")]
+        [Display(Name = "Tôi Đồng Ý Với Điều Khoản")]
         public bool AgreeToTerms { get; set; }
     }
 }

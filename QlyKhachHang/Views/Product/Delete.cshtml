@@ -1,7 +1,7 @@
-@model QlyKhachHang.Models.Product
+﻿@model QlyKhachHang.Models.Product
 
 @{
-    ViewData["Title"] = "X�a S?n Ph?m";
+    ViewData["Title"] = "Xóa Sản Phẩm";
 }
 
 <div class="row">
@@ -9,7 +9,7 @@
         <h2 class="text-danger">@ViewData["Title"]</h2>
 
         <div class="alert alert-danger">
-            <strong>C?nh b�o!</strong> H�nh ??ng n�y s? x�a s?n ph?m n�y v?nh vi?n.
+            <strong>Cảnh báo!</strong> Hành động này sẽ xóa sản phẩm này vĩnh viễn.
         </div>
 
         <div class="card mb-3">
@@ -18,19 +18,19 @@
                     <dt class="col-sm-3">ID:</dt>
                     <dd class="col-sm-9">@Model.ProductId</dd>
 
-                    <dt class="col-sm-3">T�n:</dt>
+                    <dt class="col-sm-3">Tên:</dt>
                     <dd class="col-sm-9">@Model.ProductName</dd>
 
-                    <dt class="col-sm-3">M� T?:</dt>
+                    <dt class="col-sm-3">Mô Tả:</dt>
                     <dd class="col-sm-9">@Model.Description</dd>
 
-                    <dt class="col-sm-3">Gi�:</dt>
+                    <dt class="col-sm-3">Giá:</dt>
                     <dd class="col-sm-9">@Model.Price.ToString("C0")</dd>
 
-                    <dt class="col-sm-3">T?n Kho:</dt>
+                    <dt class="col-sm-3">Tồn Kho:</dt>
                     <dd class="col-sm-9">@Model.Stock</dd>
 
-                    <dt class="col-sm-3">Danh M?c:</dt>
+                    <dt class="col-sm-3">Danh Mục:</dt>
                     <dd class="col-sm-9">@Model.Category</dd>
                 </dl>
             </div>
@@ -39,8 +39,8 @@
         <form asp-action="Delete" method="post">
             <input type="hidden" asp-for="ProductId" />
             <div class="mb-3">
-                <a asp-action="Index" class="btn btn-secondary">H?y</a>
-                <button type="submit" class="btn btn-danger">X�a</button>
+                <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+                <button type="submit" class="btn btn-danger">Xóa</button>
             </div>
         </form>
     </div>

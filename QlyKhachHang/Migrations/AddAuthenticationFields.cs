@@ -194,9 +194,6 @@ namespace QlyKhachHang.Migrations
                 columns: new[] { "CustomerId", "Address", "City", "CreatedDate", "CustomerName", "Email", "LastLoginDate", "ModifiedDate", "PasswordHash", "Phone", "PostalCode", "Status", "Username" },
                 values: new object[,]
                 {
-                    { 1, "123 ???ng 1, TP.HCM", "TP.HCM", new DateTime(2025, 11, 24, 15, 43, 34, 550, DateTimeKind.Local).AddTicks(2888), "Nguy?n V?n A", "nguyenvana@example.com", null, null, "", "0912345678", "70000", "Active", "" },
-                    { 2, "456 ???ng 2, HN", "Hà N?i", new DateTime(2025, 11, 24, 15, 43, 34, 550, DateTimeKind.Local).AddTicks(2892), "Tr?n Th? B", "tranthib@example.com", null, null, "", "0987654321", "10000", "Active", "" },
-                    { 3, "789 ???ng 3, ?N", "?à N?ng", new DateTime(2025, 11, 24, 15, 43, 34, 550, DateTimeKind.Local).AddTicks(2895), "Ph?m V?n C", "phamvanc@example.com", null, null, "", "0901234567", "50000", "Active", "" }
                 });
 
             migrationBuilder.InsertData(
@@ -204,11 +201,6 @@ namespace QlyKhachHang.Migrations
                 columns: new[] { "ProductId", "Category", "CreatedDate", "Description", "Price", "ProductName", "Stock" },
                 values: new object[,]
                 {
-                    { 1, "Áo", new DateTime(2025, 11, 24, 15, 43, 34, 550, DateTimeKind.Local).AddTicks(2615), "Áo thun nam ch?t l??ng cao", 150000m, "Áo Thun Nam", 100 },
-                    { 2, "Áo", new DateTime(2025, 11, 24, 15, 43, 34, 550, DateTimeKind.Local).AddTicks(2619), "Áo s? mi nam ki?u dáng hi?n ??i", 250000m, "Áo S? Mi Nam", 50 },
-                    { 3, "Qu?n", new DateTime(2025, 11, 24, 15, 43, 34, 550, DateTimeKind.Local).AddTicks(2622), "Qu?n jeans nam b?n b?", 350000m, "Qu?n Jeans Nam", 75 },
-                    { 4, "Áo", new DateTime(2025, 11, 24, 15, 43, 34, 550, DateTimeKind.Local).AddTicks(2625), "Áo dài truy?n th?ng sang tr?ng", 450000m, "Áo Dài N?", 40 },
-                    { 5, "Váy", new DateTime(2025, 11, 24, 15, 43, 34, 550, DateTimeKind.Local).AddTicks(2680), "Váy n? th?i trang", 300000m, "Váy N?", 60 }
                 });
 
             migrationBuilder.CreateIndex(

@@ -1,7 +1,7 @@
-@model QlyKhachHang.Models.Customer
+﻿@model QlyKhachHang.Models.Customer
 
 @{
-    ViewData["Title"] = "Chi Ti?t Kh�ch H�ng";
+    ViewData["Title"] = "Chi Tiết Khách Hàng";
 }
 
 <div class="row mb-3">
@@ -10,56 +10,63 @@
     </div>
     <div class="col-md-4 text-end">
         <a asp-action="Edit" asp-route-id="@Model.CustomerId" class="btn btn-warning">
-            <i class="fas fa-edit"></i> S?a
+            <i class="fas fa-edit"></i> Sửa
         </a>
         <a asp-action="Delete" asp-route-id="@Model.CustomerId" class="btn btn-danger">
-            <i class="fas fa-trash"></i> X�a
+            <i class="fas fa-trash"></i> Xóa
         </a>
-        <a asp-action="Index" class="btn btn-secondary">Quay L?i</a>
+        <a asp-action="Index" class="btn btn-secondary">Quay Lại</a>
     </div>
 </div>
 
 <div class="row">
     <div class="col-md-8">
+
+        <!-- Thông tin khách hàng -->
         <div class="card">
             <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">Th�ng Tin Kh�ch H�ng</h5>
+                <h5 class="mb-0">Thông Tin Khách Hàng</h5>
             </div>
             <div class="card-body">
                 <dl class="row">
                     <dt class="col-sm-3">ID:</dt>
                     <dd class="col-sm-9">@Model.CustomerId</dd>
 
-                    <dt class="col-sm-3">T�n:</dt>
+                    <dt class="col-sm-3">Tên:</dt>
                     <dd class="col-sm-9">@Model.CustomerName</dd>
 
-                    <dt class="col-sm-3">S? ?i?n Tho?i:</dt>
+                    <dt class="col-sm-3">Số Điện Thoại:</dt>
                     <dd class="col-sm-9">@Model.Phone</dd>
 
                     <dt class="col-sm-3">Email:</dt>
                     <dd class="col-sm-9">@Model.Email</dd>
 
-                    <dt class="col-sm-3">??a Ch?:</dt>
+                    <dt class="col-sm-3">Địa Chỉ:</dt>
                     <dd class="col-sm-9">@Model.Address</dd>
 
-                    <dt class="col-sm-3">Th�nh Ph?:</dt>
+                    <dt class="col-sm-3">Thành Phố:</dt>
                     <dd class="col-sm-9">@Model.City</dd>
 
-                    <dt class="col-sm-3">M� B?u ?i?n:</dt>
+                    <dt class="col-sm-3">Mã Bưu Điện:</dt>
                     <dd class="col-sm-9">@Model.PostalCode</dd>
 
-                    <dt class="col-sm-3">Ng�y T?o:</dt>
+                    <dt class="col-sm-3">Ngày Tạo:</dt>
                     <dd class="col-sm-9">@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")</dd>
 
-                    <dt class="col-sm-3">Ng�y S?a:</dt>
-                    <dd class="col-sm-9">@(Model.ModifiedDate.HasValue ? Model.ModifiedDate.Value.ToString("dd/MM/yyyy HH:mm:ss") : "Ch?a s?a")</dd>
+                    <dt class="col-sm-3">Ngày Sửa:</dt>
+                    <dd class="col-sm-9">
+                        @(Model.ModifiedDate.HasValue
+                                                ? Model.ModifiedDate.Value.ToString("dd/MM/yyyy HH:mm:ss")
+                                                : "Chưa sửa")
+                    </dd>
                 </dl>
             </div>
         </div>
 
+        <!-- Giỏ hàng -->
         <div class="card mt-4">
             <div class="card-header bg-success text-white">
-                <h5 class="mb-0">Gi? H�ng (@Model.Carts.Count)</h5>
+                <h5 class="mb-0">Giỏ Hàng (@Model.Carts.Count)</h5>
             </div>
             <div class="card-body">
                 @if (Model.Carts.Any())
@@ -68,9 +75,9 @@
                         @foreach (var cart in Model.Carts)
                         {
                             <li class="list-group-item">
-                                <strong>Gi? ID: @cart.CartId</strong> - Ng�y t?o: @cart.CreatedDate.ToString("dd/MM/yyyy")
+                                <strong>Giỏ ID: @cart.CartId</strong> - Ngày tạo: @cart.CreatedDate.ToString("dd/MM/yyyy")
                                 <a asp-controller="Cart" asp-action="Details" asp-route-id="@cart.CartId" class="btn btn-sm btn-info float-end">
-                                    Xem Chi Ti?t
+                                    Xem Chi Tiết
                                 </a>
                             </li>
                         }
@@ -78,14 +85,15 @@
                 }
                 else
                 {
-                    <p>Kh�ch h�ng ch?a c� gi? h�ng n�o.</p>
+                    <p>Khách hàng chưa có giỏ hàng nào.</p>
                 }
             </div>
         </div>
 
+        <!-- Đánh giá -->
         <div class="card mt-4">
             <div class="card-header bg-warning text-dark">
-                <h5 class="mb-0">?�nh Gi� (@Model.Reviews.Count)</h5>
+                <h5 class="mb-0">Đánh Giá (@Model.Reviews.Count)</h5>
             </div>
             <div class="card-body">
                 @if (Model.Reviews.Any())
@@ -94,7 +102,7 @@
                         @foreach (var review in Model.Reviews)
                         {
                             <li class="list-group-item">
-                                <strong>? @review.Rating/5</strong> - @review.Comment
+                                <strong>⭐ @review.Rating/5</strong> - @review.Comment
                                 <a asp-controller="Review" asp-action="Details" asp-route-id="@review.ReviewId" class="btn btn-sm btn-info float-end">
                                     Xem
                                 </a>
@@ -104,14 +112,15 @@
                 }
                 else
                 {
-                    <p>Kh�ch h�ng ch?a c� ?�nh gi� n�o.</p>
+                    <p>Khách hàng chưa có đánh giá nào.</p>
                 }
             </div>
         </div>
 
+        <!-- Hóa đơn -->
         <div class="card mt-4">
             <div class="card-header bg-danger text-white">
-                <h5 class="mb-0">H�a ??n (@Model.Invoices.Count)</h5>
+                <h5 class="mb-0">Hóa Đơn (@Model.Invoices.Count)</h5>
             </div>
             <div class="card-body">
                 @if (Model.Invoices.Any())
@@ -120,7 +129,10 @@
                         @foreach (var invoice in Model.Invoices)
                         {
                             <li class="list-group-item">
-                                <strong>@invoice.InvoiceNumber</strong> - @invoice.TotalAmount.ToString("C0") - Tr?ng th�i: @invoice.Status
+                                <strong>@invoice.InvoiceNumber</strong> -
+                                @invoice.TotalAmount.ToString("C0") -
+                                Trạng thái: @invoice.Status
+
                                 <a asp-controller="Invoice" asp-action="Details" asp-route-id="@invoice.InvoiceId" class="btn btn-sm btn-info float-end">
                                     Xem
                                 </a>
@@ -130,9 +142,10 @@
                 }
                 else
                 {
-                    <p>Kh�ch h�ng ch?a c� h�a ??n n�o.</p>
+                    <p>Khách hàng chưa có hóa đơn nào.</p>
                 }
             </div>
         </div>
+
     </div>
 </div>

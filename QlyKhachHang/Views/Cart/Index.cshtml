@@ -1,7 +1,7 @@
-@model IEnumerable<QlyKhachHang.Models.Cart>
+﻿@model IEnumerable<QlyKhachHang.Models.Cart>
 
 @{
-    ViewData["Title"] = "Danh S�ch Gi? H�ng";
+    ViewData["Title"] = "Danh Sách Giỏ Hàng";
 }
 
 <div class="row mb-3">
@@ -10,7 +10,7 @@
     </div>
     <div class="col-md-6 text-end">
         <a asp-action="Create" class="btn btn-primary">
-            <i class="fas fa-plus"></i> T?o Gi? H�ng
+            <i class="fas fa-plus"></i> Tạo Giỏ Hàng
         </a>
     </div>
 </div>
@@ -22,11 +22,11 @@
             <thead class="table-dark">
                 <tr>
                     <th>ID</th>
-                    <th>Kh�ch H�ng</th>
-                    <th>S? M?t H�ng</th>
-                    <th>Ng�y T?o</th>
-                    <th>Ng�y S?a</th>
-                    <th>H�nh ??ng</th>
+                    <th>Khách Hàng</th>
+                    <th>Số Mặt Hàng</th>
+                    <th>Ngày Tạo</th>
+                    <th>Ngày Sửa</th>
+                    <th>Hành Động</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,16 +37,16 @@
                         <td>@item.Customer?.CustomerName</td>
                         <td>@item.CartItems.Count</td>
                         <td>@item.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td>
-                        <td>@(item.ModifiedDate.HasValue ? item.ModifiedDate.Value.ToString("dd/MM/yyyy HH:mm") : "-")</td>
+                        <td>@(item.ModifiedDate.HasValue? item.ModifiedDate.Value.ToString("dd/MM/yyyy HH:mm") : "-")</td>
                         <td>
                             <a asp-action="Details" asp-route-id="@item.CartId" class="btn btn-info btn-sm btn-action">
                                 <i class="fas fa-eye"></i> Xem
                             </a>
                             <a asp-action="Edit" asp-route-id="@item.CartId" class="btn btn-warning btn-sm btn-action">
-                                <i class="fas fa-edit"></i> S?a
+                                <i class="fas fa-edit"></i> Sửa
                             </a>
                             <a asp-action="Delete" asp-route-id="@item.CartId" class="btn btn-danger btn-sm btn-action">
-                                <i class="fas fa-trash"></i> X�a
+                                <i class="fas fa-trash"></i> Xóa
                             </a>
                         </td>
                     </tr>
@@ -58,6 +58,6 @@
 else
 {
     <div class="alert alert-info">
-        <p>Kh�ng c� gi? h�ng n�o. <a asp-action="Create">T?o gi? h�ng m?i</a></p>
+        <p>Không có giỏ hàng nào. <a asp-action="Create">Tạo giỏ hàng mới</a></p>
     </div>
 }
