@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
 namespace QlyKhachHang.Models
 {
     public class LoginViewModel
@@ -12,7 +11,7 @@ namespace QlyKhachHang.Models
         [Required(ErrorMessage = "Mật khẩu là bắt buộc")]
         [StringLength(100)]
         [DataType(DataType.Password)]
-        [Display(Name = "Mật khẩu")]
+        [Display(Name = "Mật Khẩu")]
         public string Password { get; set; } = string.Empty;
 
         [Display(Name = "Nhớ tôi")]

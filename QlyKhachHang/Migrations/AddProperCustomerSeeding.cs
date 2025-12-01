@@ -32,25 +32,25 @@ namespace QlyKhachHang.Migrations
             migrationBuilder.InsertData(
                 table: "Customers",
                 columns: new[] { "CustomerId", "CustomerName", "Phone", "Email", "Address", "City", "PostalCode", "Username", "PasswordHash", "Status", "CreatedDate", "ModifiedDate", "LastLoginDate" },
-                values: new object[] { 1, "Nguyễn Văn An", "0901234567", "kh1@gmail.com", "123 Đường 1, TP.HCM", "TP.HCM", "70000", "kh1", hash123456, "Active", new DateTime(2025, 11, 24, 14, 10, 19), null, null }
+                values: new object[] { 1, "Nguyễn Văn An", "0901234567", "kh1@gmail.com", "123 Đường 1, TP.HCM", "TP.HCM", "70000", "kh1", hash123456, "Active", new DateTime(2025, 11, 24, 14, 10, 19), DBNull.Value, DBNull.Value }
             );
 
             migrationBuilder.InsertData(
                 table: "Customers",
                 columns: new[] { "CustomerId", "CustomerName", "Phone", "Email", "Address", "City", "PostalCode", "Username", "PasswordHash", "Status", "CreatedDate", "ModifiedDate", "LastLoginDate" },
-                values: new object[] { 2, "Trần Thị Bò", "0909876543", "kh2@gmail.com", "123 Đường 2, TP.HCM", "TP.HCM", "70000", "kh2", hash123456, "Active", new DateTime(2025, 11, 24, 14, 10, 19), null, null }
+                values: new object[] { 2, "Trần Thị Bò", "0909876543", "kh2@gmail.com", "123 Đường 2, TP.HCM", "TP.HCM", "70000", "kh2", hash123456, "Active", new DateTime(2025, 11, 24, 14, 10, 19), DBNull.Value, DBNull.Value }
             );
 
             migrationBuilder.InsertData(
                 table: "Customers",
                 columns: new[] { "CustomerId", "CustomerName", "Phone", "Email", "Address", "City", "PostalCode", "Username", "PasswordHash", "Status", "CreatedDate", "ModifiedDate", "LastLoginDate" },
-                values: new object[] { 3, "Phạm Minh Tuấn", "0912345678", "kh3@gmail.com", "123 Đường 3, TP.HCM", "TP.HCM", "70000", "kh3", hashMatkhu, "Active", new DateTime(2025, 11, 24, 14, 10, 19), null, null }
+                values: new object[] { 3, "Phạm Minh Tuấn", "0912345678", "kh3@gmail.com", "123 Đường 3, TP.HCM", "TP.HCM", "70000", "kh3", hashMatkhu, "Active", new DateTime(2025, 11, 24, 14, 10, 19), DBNull.Value, DBNull.Value }
             );
 
             migrationBuilder.InsertData(
                 table: "Customers",
                 columns: new[] { "CustomerId", "CustomerName", "Phone", "Email", "Address", "City", "PostalCode", "Username", "PasswordHash", "Status", "CreatedDate", "ModifiedDate", "LastLoginDate" },
-                values: new object[] { 4, "Hoàng Ngân Giang", "0923456789", "kh4@gmail.com", "123 Đường 4, TP.HCM", "TP.HCM", "70000", "kh4", hash123456, "Active", new DateTime(2025, 11, 24, 14, 10, 19), null, null }
+                values: new object[] { 4, "Hoàng Ngân Giang", "0923456789", "kh4@gmail.com", "123 Đường 4, TP.HCM", "TP.HCM", "70000", "kh4", hash123456, "Active", new DateTime(2025, 11, 24, 14, 10, 19), DBNull.Value, DBNull.Value }
             );
 
             // Insert remaining customers (5-50) with password "123456"
@@ -71,8 +71,8 @@ namespace QlyKhachHang.Migrations
                         hash123456, 
                         "Active", 
                         new DateTime(2025, 11, 24, 14, 10, 19), 
-                        null, 
-                        null 
+                        DBNull.Value, 
+                        DBNull.Value 
                     }
                 );
             }

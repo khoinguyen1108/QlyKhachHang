@@ -32,24 +32,35 @@ namespace QlyKhachHang.Services
         {
             try
             {
-                var customer = await _context.Customers
-                    .FirstOrDefaultAsync(c => 
-                        (c.Username == usernameOrEmail || c.Email == usernameOrEmail) &&
-                        c.Status == "Active");
-
-                if (customer == null)
+                // Add timeout to prevent hanging queries
+                using (var cts = new System.Threading.CancellationTokenSource(TimeSpan.FromSeconds(10)))
                 {
-                    _logger.LogWarning($"Login attempt failed: user not found for {usernameOrEmail}");
-                    return null;
-                }
+                    var customer = await _context.Customers
+                        .AsNoTracking()
+                        .FirstOrDefaultAsync(c => 
+                            (c.Username == usernameOrEmail || c.Email == usernameOrEmail) &&
+                            c.Status == "Active", cts.Token);
 
-                if (!VerifyPassword(password, customer.PasswordHash))
-                {
-                    _logger.LogWarning($"Login attempt failed: incorrect password for {usernameOrEmail}");
-                    return null;
-                }
+                    if (customer == null)
+                    {
+                        _logger.LogWarning($"Login attempt failed: user not found for {usernameOrEmail}");
+                        return null;
+                    }
 
-                return customer;
+                    // ✅ Use BCrypt for password verification
+                    if (!VerifyPassword(password, customer.PasswordHash))
+                    {
+                        _logger.LogWarning($"Login attempt failed: incorrect password for {usernameOrEmail}");
+                        return null;
+                    }
+
+                    return customer;
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                _logger.LogError($"Login query timeout for {usernameOrEmail}");
+                return null;
             }
             catch (Exception ex)
             {
@@ -62,37 +73,45 @@ namespace QlyKhachHang.Services
         {
             try
             {
-                // Kiểm tra username đã tồn tại
-                if (await _context.Customers.AnyAsync(c => c.Username == model.Username))
+                using (var cts = new System.Threading.CancellationTokenSource(TimeSpan.FromSeconds(10)))
                 {
-                    return (false, "Tên đăng nhập đã tồn tại");
+                    // Kiểm tra username đã tồn tại
+                    if (await _context.Customers.AnyAsync(c => c.Username == model.Username, cts.Token))
+                    {
+                        return (false, "Tên đăng nhập đã tồn tại");
+                    }
+
+                    // Kiểm tra email đã tồn tại
+                    if (await _context.Customers.AnyAsync(c => c.Email == model.Email, cts.Token))
+                    {
+                        return (false, "Email đã được sử dụng");
+                    }
+
+                    var customer = new Customer
+                    {
+                        CustomerName = model.CustomerName,
+                        Username = model.Username,
+                        Email = model.Email,
+                        Phone = model.PhoneNumber ?? string.Empty,
+                        Address = model.Address ?? string.Empty,
+                        City = model.City ?? string.Empty,
+                        PostalCode = model.PostalCode ?? string.Empty,
+                        PasswordHash = HashPassword(model.Password),  // ✅ Hash with BCrypt
+                        Status = "Active",
+                        CreatedDate = DateTime.Now
+                    };
+
+                    _context.Customers.Add(customer);
+                    await _context.SaveChangesAsync(cts.Token);
+
+                    _logger.LogInformation($"New customer registered: {model.Username}");
+                    return (true, "Đăng ký thành công");
                 }
-
-                // Kiểm tra email đã tồn tại
-                if (await _context.Customers.AnyAsync(c => c.Email == model.Email))
-                {
-                    return (false, "Email đã được sử dụng");
-                }
-
-                var customer = new Customer
-                {
-                    CustomerName = model.CustomerName,
-                    Username = model.Username,
-                    Email = model.Email,
-                    Phone = model.Phone,
-                    Address = model.Address,
-                    City = model.City,
-                    PostalCode = model.PostalCode,
-                    PasswordHash = HashPassword(model.Password),
-                    Status = "Active",
-                    CreatedDate = DateTime.Now
-                };
-
-                _context.Customers.Add(customer);
-                await _context.SaveChangesAsync();
-
-                _logger.LogInformation($"New customer registered: {model.Username}");
-                return (true, "Đăng ký thành công");
+            }
+            catch (OperationCanceledException)
+            {
+                _logger.LogError($"Registration query timeout for {model.Username}");
+                return (false, "Hết thời gian chờ, vui lòng thử lại");
             }
             catch (Exception ex)
             {
@@ -103,29 +122,55 @@ namespace QlyKhachHang.Services
 
         public async Task<Customer?> GetCustomerByUsernameAsync(string username)
         {
-            return await _context.Customers
-                .FirstOrDefaultAsync(c => c.Username == username && c.Status == "Active");
+            using (var cts = new System.Threading.CancellationTokenSource(TimeSpan.FromSeconds(10)))
+            {
+                return await _context.Customers
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(c => c.Username == username && c.Status == "Active", cts.Token);
+            }
         }
 
         public async Task<Customer?> GetCustomerByEmailAsync(string email)
         {
-            return await _context.Customers
-                .FirstOrDefaultAsync(c => c.Email == email && c.Status == "Active");
+            using (var cts = new System.Threading.CancellationTokenSource(TimeSpan.FromSeconds(10)))
+            {
+                return await _context.Customers
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(c => c.Email == email && c.Status == "Active", cts.Token);
+            }
         }
 
         public async Task<bool> UpdateLastLoginAsync(int customerId)
         {
             try
             {
-                var customer = await _context.Customers.FindAsync(customerId);
-                if (customer != null)
+                using (var cts = new System.Threading.CancellationTokenSource(TimeSpan.FromSeconds(5)))
                 {
-                    customer.LastLoginDate = DateTime.Now;
-                    _context.Update(customer);
-                    await _context.SaveChangesAsync();
+                    // Fire and forget - don't wait for this to complete
+                    // Update last login in background
+                    _ = Task.Run(async () =>
+                    {
+                        try
+                        {
+                            var customer = await _context.Customers.FindAsync(
+                                new object[] { customerId }, 
+                                cancellationToken: cts.Token);
+                            
+                            if (customer != null)
+                            {
+                                customer.LastLoginDate = DateTime.Now;
+                                _context.Update(customer);
+                                await _context.SaveChangesAsync(cts.Token);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(ex, "Error updating last login in background");
+                        }
+                    }, cts.Token);
+
                     return true;
                 }
-                return false;
             }
             catch (Exception ex)
             {
@@ -134,19 +179,30 @@ namespace QlyKhachHang.Services
             }
         }
 
+        /// <summary>
+        /// Hash password using BCrypt (compatible with existing database)
+        /// </summary>
         public string HashPassword(string password)
         {
-            using (var sha256 = SHA256.Create())
-            {
-                var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                return Convert.ToBase64String(hashedBytes);
-            }
+            // ✅ Use BCrypt.Net-Next for password hashing
+            return BCrypt.Net.BCrypt.HashPassword(password, workFactor: 11);
         }
 
+        /// <summary>
+        /// Verify password using BCrypt (compatible with existing database)
+        /// </summary>
         public bool VerifyPassword(string password, string hash)
         {
-            var hashOfInput = HashPassword(password);
-            return hashOfInput == hash;
+            try
+            {
+                // ✅ Use BCrypt.Net-Next to verify password
+                return BCrypt.Net.BCrypt.Verify(password, hash);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error verifying password");
+                return false;
+            }
         }
     }
 }

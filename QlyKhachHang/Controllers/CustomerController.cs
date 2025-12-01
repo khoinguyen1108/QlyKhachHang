@@ -9,6 +9,7 @@ namespace QlyKhachHang.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<CustomerController> _logger;
+        private const int PAGE_SIZE = 10;
 
         public CustomerController(ApplicationDbContext context, ILogger<CustomerController> logger)
         {
@@ -17,17 +18,83 @@ namespace QlyKhachHang.Controllers
         }
 
         // GET: Customer/Index
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(
+            string searchTerm = "",
+            string sortBy = "CustomerName",
+            string sortOrder = "asc",
+            string statusFilter = "",
+            int page = 1)
         {
             try
             {
-                var customers = await _context.Customers.OrderBy(c => c.CustomerName).ToListAsync();
+                var query = _context.Customers.AsQueryable();
+
+                // Search filter - Handle null values
+                if (!string.IsNullOrWhiteSpace(searchTerm))
+                {
+                    var lowerSearchTerm = searchTerm.ToLower();
+                    query = query.Where(c => 
+                        c.CustomerName.ToLower().Contains(lowerSearchTerm) ||
+                        (c.Phone != null && c.Phone.Contains(searchTerm)) ||
+                        c.Email.ToLower().Contains(lowerSearchTerm) ||
+                        (c.City != null && c.City.ToLower().Contains(lowerSearchTerm)));
+                }
+
+                // Status filter
+                if (!string.IsNullOrWhiteSpace(statusFilter))
+                {
+                    query = query.Where(c => c.Status == statusFilter);
+                }
+
+                // Sorting
+                query = sortBy switch
+                {
+                    "CustomerName" => sortOrder.ToLower() == "desc" 
+                        ? query.OrderByDescending(c => c.CustomerName)
+                        : query.OrderBy(c => c.CustomerName),
+                    
+                    "CreatedDate" => sortOrder.ToLower() == "desc"
+                        ? query.OrderByDescending(c => c.CreatedDate)
+                        : query.OrderBy(c => c.CreatedDate),
+                    
+                    "Email" => sortOrder.ToLower() == "desc"
+                        ? query.OrderByDescending(c => c.Email)
+                        : query.OrderBy(c => c.Email),
+                    
+                    "CustomerId" => sortOrder.ToLower() == "desc"
+                        ? query.OrderByDescending(c => c.CustomerId)
+                        : query.OrderBy(c => c.CustomerId),
+                    
+                    _ => query.OrderBy(c => c.CustomerName)
+                };
+
+                // Pagination
+                var totalCount = await query.CountAsync();
+                var totalPages = (int)Math.Ceiling((double)totalCount / PAGE_SIZE);
+
+                if (page < 1) page = 1;
+                if (page > totalPages && totalPages > 0) page = totalPages;
+
+                var customers = await query
+                    .Skip((page - 1) * PAGE_SIZE)
+                    .Take(PAGE_SIZE)
+                    .ToListAsync();
+
+                // Pass data to view
+                ViewData["SearchTerm"] = searchTerm;
+                ViewData["SortBy"] = sortBy;
+                ViewData["SortOrder"] = sortOrder;
+                ViewData["StatusFilter"] = statusFilter;
+                ViewData["CurrentPage"] = page;
+                ViewData["TotalPages"] = totalPages;
+                ViewData["TotalCount"] = totalCount;
+
                 return View(customers);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading customers");
-                TempData["Error"] = "Có lỗi khi tải danh sách khách hàng";
+                TempData["Error"] = "Có lỗi khi tải danh sách khách hàng: " + ex.Message;
                 return View(new List<Customer>());
             }
         }
@@ -46,6 +113,10 @@ namespace QlyKhachHang.Controllers
                     .Include(c => c.Carts)
                     .Include(c => c.Reviews)
                     .Include(c => c.Invoices)
+                    .Include(c => c.Notes)
+                    .Include(c => c.Contacts)
+                    .Include(c => c.Activities)
+                    .Include(c => c.Segments)
                     .FirstOrDefaultAsync(m => m.CustomerId == id);
 
                 if (customer == null)
@@ -72,13 +143,19 @@ namespace QlyKhachHang.Controllers
         // POST: Customer/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerId,CustomerName,Phone,Email,Address,City,PostalCode")] Customer customer)
+        public async Task<IActionResult> Create([Bind("CustomerId,CustomerName,Phone,Email,Address,City,PostalCode,Username,Status")] Customer customer)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     customer.CreatedDate = DateTime.Now;
+                    // For create, set a default password hash
+                    if (string.IsNullOrEmpty(customer.PasswordHash))
+                    {
+                        customer.PasswordHash = "DefaultPassword123"; // In production, hash this properly
+                    }
+                    
                     _context.Add(customer);
                     await _context.SaveChangesAsync();
                     TempData["Success"] = "Thêm khách hàng thành công";
@@ -92,7 +169,7 @@ namespace QlyKhachHang.Controllers
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Unexpected error creating customer");
-                    ModelState.AddModelError("", "Có lỗi bất ngờ khi thêm khách hàng");
+                    ModelState.AddModelError("", "Có lỗi bất ngờ khi thêm khách hàng: " + ex.Message);
                 }
             }
             return View(customer);
@@ -126,7 +203,7 @@ namespace QlyKhachHang.Controllers
         // POST: Customer/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CustomerId,CustomerName,Phone,Email,Address,City,PostalCode,CreatedDate")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("CustomerId,CustomerName,Phone,Email,Address,City,PostalCode,Username,Status,CreatedDate")] Customer customer)
         {
             if (id != customer.CustomerId)
             {
@@ -158,7 +235,7 @@ namespace QlyKhachHang.Controllers
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error editing customer");
-                    ModelState.AddModelError("", "Có lỗi khi cập nhật khách hàng");
+                    ModelState.AddModelError("", "Có lỗi khi cập nhật khách hàng: " + ex.Message);
                 }
             }
             return View(customer);
@@ -219,7 +296,7 @@ namespace QlyKhachHang.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error deleting customer");
-                TempData["Error"] = "Có lỗi khi xóa khách hàng";
+                TempData["Error"] = "Có lỗi khi xóa khách hàng: " + ex.Message;
             }
 
             return RedirectToAction(nameof(Index));

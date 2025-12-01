@@ -21,6 +21,9 @@ namespace QlyKhachHang.Models
         [DataType(DataType.Currency)]
         public decimal TotalAmount { get; set; }
 
+        [DataType(DataType.Currency)]
+        public decimal PaidAmount { get; set; } = 0;
+
         [StringLength(20)]
         public string Status { get; set; } = "Pending"; // Pending, Completed, Cancelled
 
@@ -36,5 +39,6 @@ namespace QlyKhachHang.Models
 
         // Navigation properties
         public virtual ICollection<InvoiceDetail> InvoiceDetails { get; set; } = new List<InvoiceDetail>();
+        public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
     }
 }

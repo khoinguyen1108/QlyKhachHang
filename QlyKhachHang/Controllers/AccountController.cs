@@ -59,18 +59,22 @@ namespace QlyKhachHang.Controllers
                 ModelState.AddModelError("", "Tên đăng nhập/email hoặc mật khẩu không chính xác");
                 return View(model);
             }
-            // Set session
+            // Set session immediately - don't wait for last login update
             HttpContext.Session.SetInt32("CustomerId", customer.CustomerId);
             HttpContext.Session.SetString("CustomerName", customer.CustomerName);
             HttpContext.Session.SetString("CustomerEmail", customer.Email);
-            // Update last login
-            await _authService.UpdateLastLoginAsync(customer.CustomerId);
+            
+            // Fire and forget - update last login in background (no await)
+            _ = _authService.UpdateLastLoginAsync(customer.CustomerId);
+            
             TempData["Success"] = $"Chào mừng {customer.CustomerName}!";
-            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            return RedirectToAction("Index", "Home");
+            var customerId = HttpContext.Session.GetInt32("CustomerId");
+            // GET Login - Nếu đã login → Vào Dashboard
+            if (customerId != null)
+                return RedirectToAction("Index", "CustomerDashboard");
+
+            // POST Login thành công → Vào Dashboard (không phải Home)
+            return RedirectToAction("Index", "CustomerDashboard");
         }
         // GET: Account/Profile
         public IActionResult Profile()
@@ -87,7 +91,7 @@ namespace QlyKhachHang.Controllers
         {
             HttpContext.Session.Clear();
             TempData["Success"] = "Đăng xuất thành công";
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(Login));
         }
     }
 }
